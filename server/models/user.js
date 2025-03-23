@@ -8,7 +8,7 @@ const userSchema = new Schema({
         qty: { type: Number }
     }
     ],
-    orders: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
+    orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }]
 })
 
 const User = model('User', userSchema)

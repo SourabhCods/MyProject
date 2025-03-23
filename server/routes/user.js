@@ -1,5 +1,5 @@
 import express from 'express'
-import { createNewUser , addToCart ,getCartItems , updateCartPdtQuantity } from '../controllers/user.js'
+import { createNewUser , addToCart ,getCartItems , updateCartPdtQuantity} from '../controllers/user.js'
 const router = express.Router()
 
 router.post('/', createNewUser)

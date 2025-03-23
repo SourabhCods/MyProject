@@ -1,5 +1,5 @@
 import User from "../models/user.js"
-
+import Product from "../models/product.js"
 const createNewUser = async(req,res) => {
     try{
         const newUser = new User({
@@ -14,12 +14,12 @@ const createNewUser = async(req,res) => {
 
 const addToCart = async (req, res) => {
     try {
-        const updatedCartDoc = await User.findOneAndUpdate(
+        const updatedUserCart = await User.findOneAndUpdate(
             { userAuthId: req.body.userAuthId },
             { $push: { cartItems: { pdtId: req.body.product_Id , qty : 1} } },
             { new: true } // Return the updated document
         );
-        res.send(updatedCartDoc);
+        res.send(updatedUserCart);
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal Server Error");
@@ -33,7 +33,8 @@ const getCartItems = async (req, res) => {
         if (!user) {
             return res.status(404).send("User not found");
         }
-        res.send(user.cartItems);
+        const cartTotalPrice = user.cartItems.reduce((acc, item) => acc + (item.pdtId.price * item.qty), 0);
+        res.send({ cartItems : user.cartItems , cartTotalPrice });
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal Server Error");
@@ -88,11 +89,9 @@ const updateCartPdtQuantity = async (req, res) => {
   }
 };
 
-
-
 export {
     createNewUser, 
     addToCart, 
     getCartItems,
-    updateCartPdtQuantity
+    updateCartPdtQuantity,
 }
