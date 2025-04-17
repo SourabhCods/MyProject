@@ -1,0 +1,5 @@
+const API_BASE_ENDPOINT = "http://localhost:3000"
+const PRODUCT_API =`${API_BASE_ENDPOINT}/products`
+const USER_API =`${API_BASE_ENDPOINT}/user`
+const ORDER_API =`${API_BASE_ENDPOINT}/order`
+export {API_BASE_ENDPOINT , PRODUCT_API , USER_API , ORDER_API}

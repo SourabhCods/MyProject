@@ -1,0 +1,78 @@
+/* Map.css */
+
+.map-container {
+    width: 100%;
+    height: 500px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    transform: perspective(1000px) rotateX(2deg);
+    transition: transform 0.3s ease;
+}
+
+.map-container:hover {
+    transform: perspective(1000px) rotateX(0deg) scale(1.02);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.address-list {
+    width: 100%;
+    max-width: 600px;
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    transform: perspective(1000px) rotateY(1deg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.address-list:hover {
+    transform: perspective(1000px) rotateY(0deg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #f79300;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.loading-text {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}
+
+.address-card {
+    background: #f7f7f7;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    transform: perspective(800px) rotateX(1deg);
+}
+
+/* .address-card:hover {
+    background: rgb(207, 207, 207);
+    transform: perspective(800px) rotateX(0deg) scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+} */
+
+.selected-card {
+    background: rgb(236, 236, 236);
+    /* color: rgb(236, 236, 236); */
+    font-weight: 300;
+    /* transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); */
+}
