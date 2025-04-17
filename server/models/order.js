@@ -13,6 +13,9 @@ const orderSchema = new Schema({
             dateOfDelivery: Date
         },
     },
+    deliveryAddress : {
+        type : String
+    }
     
 })
 

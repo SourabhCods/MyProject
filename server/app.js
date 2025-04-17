@@ -36,8 +36,8 @@ async function main() {
 // });
 
 const razorpay = new Razorpay({
-  key_id: "rzp_test_M7A2EY1fdxHqUb"	,
-  key_secret: "c1KO7EOOmP3ZVJVsyLzJOaDq",
+  key_id: "rzp_test_nWZ781DMokiQyJ"	,
+  key_secret: "yGqKoEC8l5TMn6Ln8TqHK5uc",
 });
 
 // Create an order
@@ -51,6 +51,7 @@ app.post("/create-order", async (req, res) => {
 
   try {
     const order = await razorpay.orders.create(options);
+    console.log(order)
     res.json(order);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -60,11 +61,12 @@ app.post("/create-order", async (req, res) => {
 // Verify payment
 app.post("/verify-payment", (req, res) => {
   const { order_id, payment_id, signature } = req.body;
-  const hmac = crypto.createHmac("sha256", "WQ4zbcEJQxVmLtdSnDSU01dW");
-  hmac.update(order_id + "|" + payment_id);
-  const generatedSignature = hmac.digest("hex");
+  const generated_signature = crypto
+  .createHmac("sha256", "yGqKoEC8l5TMn6Ln8TqHK5uc")
+  .update(`${order_id.trim()}|${payment_id.trim()}`)
+  .digest("hex");
 
-  if (generatedSignature === signature) {
+  if (generated_signature === signature) {
     res.json({ success: true });
   } else {
     res.json({ success: false });

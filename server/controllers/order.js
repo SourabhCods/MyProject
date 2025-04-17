@@ -39,7 +39,7 @@ const getAllOrders = async(req,res) => {
         const _curr_user_id  = req.params.userid
         console.log(_curr_user_id)
         const user = await User.findOne({userAuthId : _curr_user_id}).populate('orders')
-        // res.send(user.orders)
+        res.send(user.orders)
 
     } catch (error) {
         console.log(error)
@@ -48,7 +48,7 @@ const getAllOrders = async(req,res) => {
 
 const createSingleOrder = async(req,res) => {
 
-    const { user_firebase_id , product_mongo_id } = req.body
+    const { user_firebase_id , product_mongo_id , delivery_address } = req.body
     const newSingleOrder = await new Order({
         consumerId : user_firebase_id,
         productData : {pdtId : product_mongo_id , qty : 1},
@@ -56,9 +56,12 @@ const createSingleOrder = async(req,res) => {
         date: {
                 dateOfOrder: Date.now(),
                 dateOfDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Example: 7 days from now
-            }
+        },
+        deliveryAddress : delivery_address
     }).save()
+
     console.log(newSingleOrder)
+    
     const updatedUserDocument = await User.findOneAndUpdate(
         {userAuthId : user_firebase_id},
         {$push: { orders: newSingleOrder._id }},
@@ -84,6 +87,31 @@ const deleteOrder = async (req,res) => {
     await Order.findByIdAndDelete(order_id)
 }
 
+const getRecentProductOrderCount = async (req, res) => {
+    try {
+        const { product_id } = req.params;
+        
+        // Query with dot notation and date range filtering
+        // Count the documents matching the criteria
+        const twoMinutesAgo = new Date(Date.now() - 1 * 60 * 1000);
+
+        const count = await Order.countDocuments({
+            "productData.pdtId": product_id,
+            "date.dateOfOrder": { 
+                $gte: twoMinutesAgo,
+                $lte: Date.now()
+            }
+        });
+
+
+
+       res.status(200).json({ count });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
 
 
 
@@ -92,7 +120,8 @@ export {
     createOrdersFromCart , 
     getAllOrders , 
     createSingleOrder,
-    deleteOrder
+    deleteOrder,
+    getRecentProductOrderCount
 }
 
              
