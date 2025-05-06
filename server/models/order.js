@@ -15,6 +15,9 @@ const orderSchema = new Schema({
     },
     deliveryAddress : {
         type : String
+    },
+    orderTotal : {
+        type : Number
     }
     
 })

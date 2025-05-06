@@ -34,45 +34,27 @@ const createOrdersFromCart = async (req, res) => {
     }
 }; 
 
-const getAllOrders = async(req,res) => {
-    try {
-        const _curr_user_id  = req.params.userid
-        console.log(_curr_user_id)
-        const user = await User.findOne({userAuthId : _curr_user_id}).populate('orders')
-        res.send(user.orders)
-
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 const createSingleOrder = async(req,res) => {
 
-    const { user_firebase_id , product_mongo_id , delivery_address } = req.body
+    const { user_firebase_id , product_mongo_id , delivery_address , prdtQty, order_total_price } = req.body
     const newSingleOrder = await new Order({
         consumerId : user_firebase_id,
-        productData : {pdtId : product_mongo_id , qty : 1},
+        productData : {pdtId : product_mongo_id , qty : prdtQty},
         status : "Order Placed",
         date: {
                 dateOfOrder: Date.now(),
                 dateOfDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Example: 7 days from now
         },
-        deliveryAddress : delivery_address
+        deliveryAddress : delivery_address,
+        orderTotal : order_total_price
     }).save()
 
-    console.log(newSingleOrder)
-    
     const updatedUserDocument = await User.findOneAndUpdate(
         {userAuthId : user_firebase_id},
         {$push: { orders: newSingleOrder._id }},
+        {new : true}
     )
-    console.log(updatedUserDocument)
     res.send(updatedUserDocument)
-    /* req.body = {
-        ...
-        data : {}
-    } 
-    */
 }
 
 const deleteOrder = async (req,res) => {
@@ -112,16 +94,32 @@ const getRecentProductOrderCount = async (req, res) => {
     }
 };
 
+const updateUserOrderDetails = async(req,res) => {
+    const { values , orderId , product_details } = req.body
+    const updatedOrder = await Order.findByIdAndUpdate(
+        orderId,
+        {   
+            productData : {
+                pdtId : product_details._id,
+                qty : values.qty
+            },
+            deliveryAddress : values.deliveryAddress,
+            orderTotal : product_details.price*values.qty
+        },
+        {new : true}
+    )
+    res.send(updatedOrder)
+}
 
 
 
 
 export {
-    createOrdersFromCart , 
-    getAllOrders , 
+    createOrdersFromCart ,
     createSingleOrder,
     deleteOrder,
-    getRecentProductOrderCount
+    getRecentProductOrderCount,
+    updateUserOrderDetails
 }
 
              

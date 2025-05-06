@@ -89,9 +89,25 @@ const updateCartPdtQuantity = async (req, res) => {
   }
 };
 
+const getOrders = async(req,res) => {
+  const {user_auth_id} = req.body;
+  const user = await User.findOne(
+    {userAuthId  : user_auth_id}
+  )
+  .populate({
+      path: 'orders',
+      populate: {
+        path: 'productData.pdtId',
+        model: 'Product'            
+      }
+    });
+  res.send(user.orders)
+}
+
 export {
     createNewUser, 
     addToCart, 
     getCartItems,
     updateCartPdtQuantity,
+    getOrders
 }

@@ -35,6 +35,26 @@ const getProductsOnFilter = async (req, res) => {
     }
 };
 
+// controller for showing specific category products
+const getProductsByCategory = async (req, res) => {
+    const { category } = req.params;
+
+    try {
+        const products = await Product.find({
+            category: category
+        });
+
+        res.send(products);
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching products', error });
+    }
+};
 
 
-export {getAllProducts , getproductInfo , getProductsOnFilter}
+
+export {
+    getAllProducts , 
+    getproductInfo , 
+    getProductsOnFilter , 
+    getProductsByCategory
+}

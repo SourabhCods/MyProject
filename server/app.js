@@ -1,6 +1,4 @@
 import express from 'express'
-// import http from 'http'
-// import { Server } from 'socket.io'
 import productRouter from '../server/routes/product.js'
 import userRouter from '../server/routes/user.js'
 import orderRouter from '../server/routes/order.js'
@@ -10,8 +8,6 @@ import Razorpay from 'razorpay'
 import Order from "./models/order.js";
 import crypto from 'crypto'
 const app = express()
-// const server = http.createServer(app);
-// const io = new Server(server);
 
 // Middleware
 app.use(cors()); // Enable CORS for frontend communication
@@ -24,16 +20,6 @@ main()
 async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/meesho');
 }
-
-// // Socket.IO connection
-// io.on("connection", (socket) => {
-//     console.log("A user connected:", socket.id);
-
-//     // On Client disconnect
-//     socket.on("disconnect", () => {
-//         console.log("User disconnected:", socket.id);
-//     });
-// });
 
 const razorpay = new Razorpay({
   key_id: "rzp_test_nWZ781DMokiQyJ"	,
