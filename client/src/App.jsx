@@ -1,42 +1,42 @@
 import './App.css'
-
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import Product from './Product'
-import ProductInfo from './ProductInfo'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './Protectedroute'
 import Login from './Login'
 import Signup from './Signup'
+import Product from './Product'
+import ProductInfo from './ProductInfo'
 import Cart from './Cart'
-import Payment from './Payment'
+import Payment from './Payment.jsx'
 import Order from './Order'
 import Map from './Map'
 import Intermediatery from './Intermediatery'
-function App() {
 
+function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
+    <BrowserRouter>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Protected Routes */}
+        {[
+          { path: '/', element: <Product /> },
+          { path: '/productInfo/:productId', element: <ProductInfo /> },
+          { path: '/cart', element: <Cart /> },
+          { path: '/pay', element: <Payment /> },
+          { path: '/orders', element: <Order /> },
+          { path: '/map', element: <Map /> },
+          { path: '/details', element: <Intermediatery /> },
+        ].map(({ path, element }) => (
           <Route 
-            path='/' 
-            element={
-              <ProtectedRoute>
-                <Product/>
-              </ProtectedRoute>
-            }
-          />  
-          <Route path='/productInfo/:productId' element={<ProductInfo/>}/>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/cart" element={<Cart/>}/>
-          <Route path="/pay" element={<Payment/>}/>
-          <Route path="/orders" element={<Order/>}/>
-          <Route path="/map" element={<Map/>}/>
-          <Route path="/details" element={<Intermediatery/>}/>
-        </Routes>
-      </BrowserRouter>  
-    </>
-      
+            key={path} 
+            path={path} 
+            element={<ProtectedRoute>{element}</ProtectedRoute>} 
+          />
+        ))}
+      </Routes>
+    </BrowserRouter>
   )
 }
 

@@ -20,6 +20,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "firebase": "^11.2.0",
+    "framer-motion": "^12.7.4",
     "lucide-react": "^0.482.0",
     "olamaps-web-sdk": "^1.1.2",
     "react-dom": "^18.3.1",

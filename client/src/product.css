@@ -94,11 +94,22 @@
   transform: translateY(-3px);
 }
 
-/* Empty cart message */
 .empty-cart {
   color: #888;
   font-size: 16px;
   text-align: center;
   margin-top: 20px;
 }
+
+.buy_btn{
+  height: 3rem;
+  width: 10.5rem;
+  border-color: black;
+}
+
+.buy_btn:hover{
+  border-color: black !important;
+  color: black !important;
+}
+  
 

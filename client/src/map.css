@@ -6,7 +6,6 @@
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     margin-bottom: 20px;
-    transform: perspective(1000px) rotateX(2deg);
     transition: transform 0.3s ease;
 }
 
@@ -22,13 +21,12 @@
 }
 
 .address-list {
-    width: 100%;
-    max-width: 600px;
+    width: 96%;
     background: #ffffff;
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    transform: perspective(1000px) rotateY(1deg);
+    transform: perspective(1000px);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -61,6 +59,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     transform: perspective(800px) rotateX(1deg);
+    text-align: start;
 }
 
 /* .address-card:hover {
@@ -76,3 +75,42 @@
     /* transform: scale(1.05);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); */
 }
+
+.nearby-locations{
+    width: 96.5%;
+    border: 0.5px solid #808080;
+    padding: 0 1.5rem 0 1rem;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    text-align: start;
+}
+
+.nearby-locations div{
+    width: 100%;
+    border-width: 1px;
+    border-style: ridge;
+    border-bottom-color: rgb(66, 146, 146);
+    border-left: white;
+    border-right: white;
+    font-size: 1.1rem;
+    padding: 1rem 0.5rem 0.75rem 0.5rem;
+    margin-left: 0rem;
+    cursor: alias;
+}
+
+#location-input{
+    border-bottom-left-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+    height: 3rem;
+    font-size: 1.25rem;
+}
+
+#location-input:hover{
+    border-color: grey !important;
+    box-shadow: none !important;
+}
+
+
+
+
+

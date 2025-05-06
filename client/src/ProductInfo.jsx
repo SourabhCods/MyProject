@@ -4,7 +4,7 @@ import { ORDER_API, PRODUCT_API, USER_API } from "./config";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { auth } from "./firebaseInit";
-import { Rate } from "antd"
+import { Rate , Input } from "antd"
 import CustomCarousel from "./CustomCarousel";
 import './productinfo.css'
 
@@ -13,6 +13,7 @@ const ProductInfo = () => {
   const [product, setProduct] = useState({});
   const [orderCount , setOrderCount] = useState(0)
   const [cartArray, setCartArray] = useState([]);
+  const [qty , setQty] = useState(1)
   
   // Fetch product data
   useEffect(() => {
@@ -64,7 +65,7 @@ const ProductInfo = () => {
   const naviagte = useNavigate()
 
   const onClickPlaceOrder = async() => {
-    naviagte("/details" , {state : {productId , price : product.price}})
+    naviagte("/details" , {state : {productId , price : product.price , quantity : qty}})
   }
 
   setTimeout(async() => {
@@ -72,13 +73,27 @@ const ProductInfo = () => {
     setOrderCount(res.data.count)
   } , 60000) 
 
+  const handleOnQtyBtnClick = async (operation) => {
+    try {
+      if(operation === "+"){
+        setQty(prev => prev+1)
+      }
+      if(operation === "-" && qty > 1){
+        setQty(prev => prev-1)
+      }
       
+    } catch (error) {
+      console.error('Error updating cart:', error);
+      message.error('Failed to update quantity');
+    }
+  };    
 
 
   return (
     <>
       <Link to={"/cart"}>See Your Cart</Link>
-
+      <br/>
+      <Link to={"/orders"}>See Your Orders</Link>
       <CustomCarousel product={product} />
   
       <div className="product-info">
@@ -93,6 +108,12 @@ const ProductInfo = () => {
         <div className="btn-box">
           <Button onClick={isProductExistInCart} className="Btn">Add to Cart</Button>
           <Button onClick={onClickPlaceOrder} className="Btn">Place Order</Button>
+        </div>
+        <div className="qty-Box">
+          <p>How Much Quantity Did You Want To Purchase ?</p>
+          <Button className="qty-btn" onClick={() => handleOnQtyBtnClick("+")}><span style={{position : "relative" , bottom : "0.2rem"}}>+</span></Button>
+          <p style={{fontSize : "1.5rem"}}>{qty}</p>
+          <Button className="qty-btn" onClick={() => handleOnQtyBtnClick("-")}><span style={{position : "relative" , bottom : "0.2rem"}}>-</span></Button>
         </div>
       </div>
 
