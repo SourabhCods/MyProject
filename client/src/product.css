@@ -11,14 +11,32 @@
     align-items : center;
 }
 
+#drawer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .menu_items{
     height : 2.5rem;
     width :  19.85rem;
-    border : 1px solid black;
-    border-radius: 0.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgb(0, 0, 0 , 0.15);
+    border-radius: 1.1rem;
     margin-bottom : 1.1rem;
-    padding : 0.85rem 0rem 0.65rem 0.5rem;
-    font-size: 1rem;
+    padding : 0.8rem;
+    font-size: 1.2rem;
+    text-align: justify;
+    cursor: pointer;
+}
+.menu_items i{
+  font-size: 1.5rem;
+}
+.menu_items:hover{
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
+  color: whitesmoke;
 }
 
 /* Cart container styling */
@@ -26,7 +44,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .ant-table-wrapper:hover {
@@ -110,6 +128,25 @@
 .buy_btn:hover{
   border-color: black !important;
   color: black !important;
+}
+
+#category-label{
+  font-family: "Playwrite DK Loopet", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+#ct-bug-box{
+  height: auto;
+  width: auto;
+  border: 1px solid rgb(0, 0, 0, 0.1);
+  border-radius: 1.1rem;
+  padding: 1rem;
+}
+
+#ct-bug-box:hover{
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
+  color: whitesmoke;
 }
   
 

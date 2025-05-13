@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Image, Typography, Space, message } from 'antd';
 import { ORDER_API, USER_API } from './config';
 import { auth } from './firebaseInit';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import './product.css';
 
 const { Title } = Typography;
@@ -39,16 +39,8 @@ const Cart = () => {
     }
   };
 
-  const OnBuyBtnClick = async () => {
-    try {
-      const res = await axios.post(`${ORDER_API}`, { currUserId: id, currCart: cartProducts });
-      console.log(res.data);
-      message.success('Order placed successfully!');
-      navigate('/orders');
-    } catch (error) {
-      console.error('Order failed:', error);
-      message.error('Failed to place order');
-    }
+  const OnBuyBtnClick = () => {
+    navigate('/details/cart' ,  { state :  { cart : {cartProducts : cartProducts , cartTotal : cartTotal} } })
   };
 
   const columns = [

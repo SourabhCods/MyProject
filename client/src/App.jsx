@@ -27,7 +27,7 @@ function App() {
           { path: '/pay', element: <Payment /> },
           { path: '/orders', element: <Order /> },
           { path: '/map', element: <Map /> },
-          { path: '/details', element: <Intermediatery /> },
+          { path: '/details/:type', element: <Intermediatery /> },
         ].map(({ path, element }) => (
           <Route 
             key={path} 

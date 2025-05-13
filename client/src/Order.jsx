@@ -22,6 +22,7 @@ const Order = () => {
     const [detailBoxOpen , setDetailBoxOpen] = useState(false)
     const [fieldDisabled , setFieldDisabled] = useState(true)
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [showOrderBox , setShowOrderBox] = useState(false)
     
     const [form] = Form.useForm();
 
@@ -32,8 +33,10 @@ const Order = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await axios.post(`${USER_API}/orders` , {user_auth_id : auth.currentUser.uid});
-                console.log(res.data)
+                const res = await axios.post(`${USER_API}/orders` , {user_auth_id : auth.currentUser.uid})
+                setTimeout(() => {
+                    setShowOrderBox(true);
+                },5000)
                 setOrders(res.data)
             } catch (error) {
                 console.log(error);
@@ -47,7 +50,6 @@ const Order = () => {
         if (selectedOrder) {
         // Set form fields when selectedOrder changes
         form.setFieldsValue({
-            orderTotal: selectedOrder.orderTotal,
             deliveryAddress: selectedOrder.deliveryAddress,
             dateOfOrder: getDate(selectedOrder.date.dateOfOrder),
             dateOfDelivery: getDate(selectedOrder.date.dateOfDelivery),
@@ -55,15 +57,12 @@ const Order = () => {
         });
         }
     }, [selectedOrder, form]);
-    // const onChange = (date, dateString) => {
-    //     console.log(date, dateString);
-    // };
 
 
     const handleOnSubmitForm = async(values) => {
         try{
 
-            const res = axios.patch(
+            axios.patch(
                 `${ORDER_API}/udt_detail` ,  
                 { 
                     values,
@@ -78,12 +77,38 @@ const Order = () => {
         }
     }
 
-//ShantiNath Digambar Jain Mandir Sec 16 Rohini, A3/1, Near Canara Bank - Delhi Rockfield Public School, Pocket 3, Sector 16A, Rohini, Delhi, 110089, India
+    const handleOnOrderDelete = async() => {
+        const res = await axios.delete(`${ORDER_API}/${selectedOrder._id}` , {user_auth_id : auth.currentUser.uid})
+        console.log(res.data);
+    }
+    
+
     
     return (
         <> 
-        {orders.length != 0 ? 
-            <div style={{ padding: '24px' }}>
+        {orders.length === 0 && showOrderBox === true? 
+            <Fragment>
+                <a href='/'><img src='https://assets-v2.lottiefiles.com/a/0953d504-117d-11ee-aa49-1f149204cb5f/9uZcoEJaoF.gif'/></a>
+                <p>YOU'VE NO ORDERS </p>
+                <p>CLICK ON THE BOX TO BROWSE PRODUCTS</p>
+            </Fragment> : 
+            <div style={{ padding: '24px' }} appear>
+                <span 
+                    style={{
+                        fontFamily : "Special Elite",
+                        fontWeight: 400,
+                        fontStyle: "normal",
+                        fontSize : "3.5rem",
+                    }}
+                >
+                Your Order's
+                </span>
+                <img 
+                    src='https://pixcap.com/cdn/library/template/1730406885216/thumbnail/Add_To_Cart_3D_Icon_transparent_emp_400.webp'
+                    style={{
+                        height : "8.5rem",
+                    }}
+                />
                 <Row gutter={[16, 16]}>
                     {orders.map((order) => (
                         <Col key={order._id} xs={24} sm={12} md={8} lg={8} xl={8}>
@@ -144,12 +169,8 @@ const Order = () => {
                         </Col>
                     ))}
                 </Row>
-            </div>  : 
-            <>
-                <a href='/'><img src='https://assets-v2.lottiefiles.com/a/0953d504-117d-11ee-aa49-1f149204cb5f/9uZcoEJaoF.gif'/></a>
-                <p>YOU'VE NO ORDERS </p>
-                <p>CLICK ON THE BOX TO BROWSE PRODUCTS</p>
-            </>
+            </div> 
+            
 }
             <Modal
                 title="Order Details"
@@ -168,11 +189,6 @@ const Order = () => {
                         form={form}
                         onFinish={handleOnSubmitForm}
                     >
-                        <Form.Item name="orderTotal" label="Order Total">
-                            <InputNumber 
-                                disabled={true} 
-                            />
-                        </Form.Item>
 
                         <Form.Item name="deliveryAddress" label="Your Order Address">
                             <Input 
@@ -194,6 +210,7 @@ const Order = () => {
 
                         <Button onClick={() => setFieldDisabled(false)}>Edit Order Details</Button>
                         <Button htmlType="submit">Save Changes</Button>
+                        <Button onClick={handleOnOrderDelete}>Delete Order</Button>
                     </Form>
                 )}
                 </Modal>  

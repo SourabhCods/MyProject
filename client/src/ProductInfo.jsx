@@ -19,7 +19,7 @@ const ProductInfo = () => {
   useEffect(() => {
     const getProductData = async () => {
       try {
-        const res = await axios.post(`${PRODUCT_API}/productInfo/${productId}`);
+        const res = await axios.get(`${PRODUCT_API}/productInfo/${productId}`);
         setProduct(res.data);
       } catch (error) {
         console.error("Error fetching product data:", error);
@@ -65,7 +65,7 @@ const ProductInfo = () => {
   const naviagte = useNavigate()
 
   const onClickPlaceOrder = async() => {
-    naviagte("/details" , {state : {productId , price : product.price , quantity : qty}})
+    naviagte("/details/single" , {state :  { single : {productId : productId , quantity : qty} } })
   }
 
   setTimeout(async() => {
