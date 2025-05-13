@@ -5,5 +5,5 @@ const router = express.Router();
 router.get('/allProducts' ,  getAllProducts)
 router.get('/:category',  getProductsByCategory)
 router.post('/filter/products' , getProductsOnFilter)
-router.post('/productInfo/:id' , getproductInfo)
+router.get('/productInfo/:id' , getproductInfo)
 export default router;

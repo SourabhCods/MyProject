@@ -2,28 +2,29 @@ import Order from "../models/order.js"
 import User from "../models/user.js";
 const createOrdersFromCart = async (req, res) => {
     
-    const data = req.body.currCart; // cart array
+    const {currCart, delivery_address, currUserId} = req.body // cart array
     try {
         // Use Promise.all to handle multiple asynchronous operations
         const orders = await Promise.all(
-            data.map(async (obj) => {
+            currCart.map(async (obj) => {
                 const newOrder = new Order({
-                    consumerId : req.body.currUserId,
+                    consumerId : currUserId,
                     productData: obj, 
                     status : "Order Placed",
                     date: {
                         dateOfOrder: Date.now(),
                         dateOfDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Example: 7 days from now
                     },
+                    deliveryAddress : delivery_address,
                 });
                 const savedOrder = await newOrder.save();
+
                 const updatedUser = await User.findOneAndUpdate(
                     {userAuthId : req.body.currUserId},
                     { $push: { orders: savedOrder._id } , $pull: { cartItems: obj} },
                     { new: true }
                 )
                 console.log(updatedUser)
-                // io.emit("order_created", savedOrder);
                 return newOrder; // Return the saved order
             })
         );
@@ -58,15 +59,16 @@ const createSingleOrder = async(req,res) => {
 }
 
 const deleteOrder = async (req,res) => {
-    const order_id  = req.params.order_id
-    const user_doc_id = '67c4570e902c9ab51ef545e6'
-    await User.findByIdAndUpdate(user_doc_id , {
+    const  { order_id } = req.params
+    const  { user_auth_id } = req.body
+    const updatedUserDoc = await User.findOneAndUpdate({userAuthId : user_auth_id} , {
     // pull / remove order from current session user's document
         $pull : {orders : order_id},
         }, 
         {new : true}
     )
     await Order.findByIdAndDelete(order_id)
+    res.send(updatedUserDoc)
 }
 
 const getRecentProductOrderCount = async (req, res) => {
