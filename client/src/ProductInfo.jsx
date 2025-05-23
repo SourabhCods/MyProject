@@ -91,9 +91,6 @@ const ProductInfo = () => {
 
   return (
     <>
-      <Link to={"/cart"}>See Your Cart</Link>
-      <br/>
-      <Link to={"/orders"}>See Your Orders</Link>
       <CustomCarousel product={product} />
   
       <div className="product-info">
@@ -103,7 +100,8 @@ const ProductInfo = () => {
           <Rate allowHalf value={product?.rating?.rate || 0} />
           <span> ({product?.rating?.count || 0} reviews)</span>
         </div>
-        <p>{orderCount}</p>
+        <p>({orderCount} no.of users purchased in last minute)</p>
+        <br/>
         <p>{product.description}</p>
         <div className="btn-box">
           <Button onClick={isProductExistInCart} className="Btn">Add to Cart</Button>

@@ -131,9 +131,10 @@
 }
 
 #category-label{
-  font-family: "Playwrite DK Loopet", cursive;
-  font-optical-sizing: auto;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
   font-style: normal;
+  font-size: large;
 }
 
 #ct-bug-box{

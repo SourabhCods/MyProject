@@ -1,74 +1,51 @@
 import React from 'react';
 import { useState, useEffect , Fragment } from 'react';
 import axios from 'axios';
-import {Card, Row, Col , Button , Divider , Drawer , Slider , Select , Tabs , Skeleton} from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import {Card, Row, Col , Button , Divider, Tabs , Skeleton} from 'antd';
+import {useLocation, useNavigate } from 'react-router-dom';
 import { PRODUCT_API } from './config';
-import SelectBox from './antdesigncomponents/SelectBox';
-import { optionsForCategory} from './options';
 import './product.css';
-import { Footer } from 'antd/es/layout/layout';
 
-const { Meta } = Card;
+
 const Product = () => {
 
   const navigate = useNavigate()
   const [products , setProducts] = useState([]);
-  const [category , setCategory] = useState("")
-  const [price , setPrice] = useState(0)
-  const [open, setOpen] = useState(false);
   const [showLoading , setShowLoading] = useState(false)
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+  const location = useLocation();
+  const filteredProducts = location.state;
+
+  useEffect(() => {
+    if (filteredProducts && Array.isArray(filteredProducts) && filteredProducts.length > 0) {
+      setProducts(filteredProducts);
+    }
+  }, [filteredProducts]);
+
 
   // render's all data immediately
   useEffect(() => {
-  const getAllProducts = async () => {
-    try {
-      const res = await axios.get(`${PRODUCT_API}/allProducts`);
-      setProducts(res.data);
-    } catch (err) {
-      console.error("Error in fetching the products:", err);
-    }
-  };
-
-  setShowLoading(true); // Show skeletons immediately
-  getAllProducts();
-
-  const timer = setTimeout(() => {
-    setShowLoading(false); // Show products after 2 seconds
-  }, 5000);
-
-  return () => clearTimeout(timer); // Clean up timeout if component unmounts
-}, []);
-
-
-
-  const renderAllProducts = async () => {
+    const getAllProducts = async () => {
       try {
         const res = await axios.get(`${PRODUCT_API}/allProducts`);
-        return res.data;
+        setProducts(res.data);
       } catch (err) {
         console.error("Error in fetching the products:", err);
       }
-  }
+    };
+
+    setShowLoading(true); // Show skeletons immediately
+    getAllProducts();
+
+    const timer = setTimeout(() => {
+      setShowLoading(false); // Show products after 2 seconds
+    }, 5000);
+
+    return () => clearTimeout(timer); // Clean up timeout if component unmounts
+  }, []);
 
   const handleOnCardClick = (prdtId) => {
     navigate(`/productInfo/${prdtId}`)
-  }
-
-
-  const handleOnCategoryChange = (value) => {
-    setCategory(value)
-  }
-
-  const handleOnPriceChange = (value) => {
-    setPrice(value)
   }
 
   const getProductsByCategory = async(category) => {
@@ -80,26 +57,18 @@ const Product = () => {
     }
   }
 
-  const handleOnApplyBtnClick = async(category , price) => {
-    try {
-      const res =  await axios.post(`${PRODUCT_API}/filter/products` , {category , price})
-      setProducts(res.data)
-    } catch (e) {
+  const onTabChange = async(key) => {
+    const obj = items.find(obj => obj.key === key);
+    try{
+      const products = await getProductsByCategory(obj.category_type)
+      setProducts(products)
+    }
+    catch(e){
       console.log(e)
     }
   }
 
-  const onTabChange = async(key) => {
-      const obj = items.find(obj => obj.key === key);
-      try{
-        const products = await getProductsByCategory(obj.category_type)
-        setProducts(products)
-      }
-      catch(e){
-        console.log(e)
-      }
-  }
-
+  // categories for browsing
   const items = [
     {
       key: '1',
@@ -157,77 +126,17 @@ const Product = () => {
 
   return (
     <>
-      <Button  
-        onClick={showDrawer} 
-        style={{marginRight : "88.5rem"}}
+      <p
+        style={{
+          fontFamily: "Poppins",
+          fontWeight: 100,
+          fontStyle: "normal",
+          fontSize : "5rem"
+        }}
       >
-        Open
-      </Button>
-
+        Browse Categories & Shop Instantly
+      </p>
       <Tabs items={items} onChange={onTabChange}/>
-
-      <Drawer 
-        title="Product Hub" 
-        onClose={onClose} 
-        open={open}
-        placement="left"
-        id='drawer'
-        width="26.5rem"
-      >
-        {/* <p onClick={renderAllProducts}>Browse All Products</p> */}
-        
-        <div className='menu_items' onClick={() => navigate('/cart')}>
-          Cart Items
-          <i class="fa-solid fa-cart-shopping fa-bounce"></i>
-        </div>
-        <div className='menu_items' onClick={() => navigate('/orders')}>
-          Orders
-          <i class="fa-solid fa-bag-shopping fa-bounce"></i>
-        </div>
-        <div className='menu_items'>Profile
-          <i class="fa-solid fa-circle-user"></i>
-        </div>
-        <div className='menu_items'>Discounts & Offers
-          <i class="fa-solid fa-tags fa-shake"></i>
-        </div>
-
-
-        <div id='ct-bug-box'>
-          <p style={{
-            fontSize : "1.25rem",
-          }}>
-            Set Your Category & max.Budget
-          </p>
-          <Select
-            defaultValue="Select Category"
-            style = {{height : "3.5rem" , width : "20rem"}}
-            onChange={handleOnCategoryChange}
-            options={optionsForCategory}
-          />
-          <p style={{
-            fontSize : "1.25rem",
-          }}>
-          Maximum Budget
-          </p>  
-          <Slider 
-            min={0}
-            max={1000}
-            onChange={handleOnPriceChange}
-          />
-          <br/>
-          <Button 
-            onClick={() => handleOnApplyBtnClick(category , price)}
-            style={{
-              width : "70%",
-              height : "3rem"
-            }}
-          >
-          Apply
-          </Button>
-        </div>
-
-        
-      </Drawer>
 
       <div style={{ padding: '24px' }}>
         <Row gutter={[16 , 16]}>

@@ -10,6 +10,7 @@ import Payment from './Payment.jsx'
 import Order from './Order'
 import Map from './Map'
 import Intermediatery from './Intermediatery'
+import Layout from './Layout.jsx'
 
 function App() {
   return (
@@ -29,11 +30,13 @@ function App() {
           { path: '/map', element: <Map /> },
           { path: '/details/:type', element: <Intermediatery /> },
         ].map(({ path, element }) => (
-          <Route 
-            key={path} 
-            path={path} 
-            element={<ProtectedRoute>{element}</ProtectedRoute>} 
-          />
+          <Route element={<Layout/>}>
+            <Route 
+              key={path} 
+              path={path} 
+              element={<ProtectedRoute>{element}</ProtectedRoute>} 
+            />
+          </Route>
         ))}
       </Routes>
     </BrowserRouter>

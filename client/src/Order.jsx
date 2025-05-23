@@ -93,128 +93,131 @@ const Order = () => {
                 <p>CLICK ON THE BOX TO BROWSE PRODUCTS</p>
             </Fragment> : 
             <div style={{ padding: '24px' }} appear>
-                <span 
+                <p 
                     style={{
-                        fontFamily : "Special Elite",
-                        fontWeight: 400,
+                        fontWeight: 200,
                         fontStyle: "normal",
                         fontSize : "3.5rem",
+                        textAlign : "start",
                     }}
                 >
                 Your Order's
-                </span>
-                <img 
-                    src='https://pixcap.com/cdn/library/template/1730406885216/thumbnail/Add_To_Cart_3D_Icon_transparent_emp_400.webp'
-                    style={{
-                        height : "8.5rem",
-                    }}
-                />
+                </p>
+                <Divider variant='dashed' style={{ borderColor: '#000000'}}/>
                 <Row gutter={[16, 16]}>
                     {orders.map((order) => (
-                        <Col key={order._id} xs={24} sm={12} md={8} lg={8} xl={8}>
-                            <Card
-                                style={{ width: '22rem' , height : '41.5rem'}}
-                                // onClick={() => handleOnCardClick(product._id)}
-                                cover={
-                                  <img
-                                    alt={order?.productData?.pdtId?.title}
-                                    src={order?.productData?.pdtId?.image}
-                                    style={{
-                                      margin : "1rem 1rem 1rem 1rem",
-                                      height: '19.5rem',
-                                      objectFit: 'contain', // Ensures the image fits properly
-                                      width: '20rem',
-                                    }}
-                                    
-                                  />
-                                }
-                              >
-                              <Divider/>  
-                                    <Fragment>    
-                                        <i style={{fontSize : "0.97rem"}}>{order?.productData?.pdtId?.title}</i>
-                                        <div
-                                        style={{
-                                            display: '-webkit-box',
-                                            WebkitLineClamp: 2, // Limit to 2 lines
-                                            WebkitBoxOrient: 'vertical',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis', // Add ellipsis for overflow
-                                            whiteSpace: 'normal', // Allow wrapping
-                                        }}
-                                        >
+                        <Col key={order._id} xs={24} sm={12} md={8} lg={2} xl={2}>
+                                <div id='order-box'>
+                                    <div id='prim-box'>
+                                        <img
+                                            alt={order?.productData?.pdtId?.title}
+                                            src={order?.productData?.pdtId?.image}
+                                            style={{
+                                            margin : "1rem 1rem 1rem 1rem",
+                                            height: '9.5rem',
+                                            objectFit: 'contain', // Ensures the image fits properly
+                                            width: '20rem',
+                                            }}
+                                        /> 
+                                        <div id='prim-details'>
+                                            <p id='order-title'>{order?.productData?.pdtId?.title}</p>
+                                            <div id='secd-details'>
+                                                <div>
+                                                    <p className='p1'>Price</p>
+                                                    <p className='p2'>{order?.productData?.pdtId?.price}</p>
+                                                </div>
+                                                <div>
+                                                    <p className='p1'>Qty.</p>
+                                                    <p className='p2'>{order?.productData?.qty}</p>
+                                                </div>
+                                                <div>
+                                                    <p className='p1'>Invoice</p>
+                                                    <i class="fa-solid fa-download" style={{
+                                                        fontSize : "1.8rem"
+                                                    }}></i>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </Fragment> 
-                                    <div className='delivery_Data_Box'>
-                                        <div className='delivery_Detail'>
-                                            <img src={icons.orderPlaced}/>
-                                            <p>
-                                                { getDate(order.date?.dateOfOrder) }
-                                            </p>
-                                        </div>
-                                        <div className='delivery_Detail'>
-                                            <img src={icons.orderDelivered}/>
-                                            <p>
-                                                { getDate(order.date?.dateOfDelivery) }
-                                            </p>
-                                        </div>
-                                        <Button onClick={() => {
+                                    </div>
+                                    <div id='btn-box'>
+                                        <button onClick={() => {
                                             setSelectedOrder(order);
                                             setDetailBoxOpen(true);
-                                        }}>
-                                            Order Details
-                                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/navigation-3d-icon-download-in-png-blend-fbx-gltf-file-formats--location-direction-map-modern-life-pack-user-interface-icons-5999464.png?f=webp" className='btn-img'/>
-                                        </Button>
+                                        }}>Item Details</button>
+                                        <button>Track Order</button>
                                     </div>
-                            </Card>
+                                </div>
                         </Col>
                     ))}
                 </Row>
             </div> 
-            
-}
-            <Modal
-                title="Order Details"
-                centered
-                width={900}
-                open={detailBoxOpen}
-                onOk={() => setDetailBoxOpen(false)}
-                onCancel={() => setDetailBoxOpen(false)}
-                styles={{body : {height : "22rem"}}}
-                footer={null}
+        }
+
+        <Modal
+            title={<h2 style={{ fontSize: '1.8rem', fontWeight: '600', fontFamily: 'Poppins' }}>Order Details</h2>}
+            centered
+            width={900}
+            open={detailBoxOpen}
+            onOk={() => setDetailBoxOpen(false)}
+            onCancel={() => setDetailBoxOpen(false)}
+            footer={null}
             >
-                {selectedOrder && (
-                    <Form 
-                        variant='underlined' 
-                        name="orderForm" 
-                        form={form}
-                        onFinish={handleOnSubmitForm}
-                    >
+            {selectedOrder && (
+                <Form
+                layout="vertical"
+                name="orderForm"
+                form={form}
+                onFinish={handleOnSubmitForm}
+                style={{ fontSize: '1.1rem' }}
+                >
+                <Form.Item
+                    name="deliveryAddress"
+                    label={<span style={{ fontSize: '1.25rem' }}>Your Order Address</span>}
+                >
+                    <Input disabled={fieldDisabled} className='form-fld'/>
+                </Form.Item>
 
-                        <Form.Item name="deliveryAddress" label="Your Order Address">
-                            <Input 
-                                disabled={fieldDisabled}
-                            />
-                        </Form.Item>
+                <Form.Item
+                    name="dateOfOrder"
+                    label={<span style={{ fontSize: '1.25rem' }}>Date of Order</span>}
+                >
+                    <Input className='form-fld' disabled />
+                </Form.Item>
 
-                        <Form.Item name="dateOfOrder" label="Date of Order">
-                            <Input disabled/>
-                        </Form.Item>
+                <Form.Item
+                    className='form-fld'
+                    name="dateOfDelivery"
+                    label={<span style={{ fontSize: '1.25rem' }}>Date of Delivery</span>}
+                >
+                    <Input className='form-fld' disabled />
+                </Form.Item>
 
-                        <Form.Item name="dateOfDelivery" label="Date of Delivery">
-                            <Input disabled />
-                        </Form.Item>
+                <Form.Item
+                    className='form-fld'
+                    name="qty"
+                    label={<span style={{ fontSize: '1.25rem' }}>Quantity</span>}
+                >
+                    <InputNumber className='form-fld' disabled={fieldDisabled} style={{ width: '100%' }} />
+                </Form.Item>
 
-                        <Form.Item name = "qty" label="Quantity">
-                            <InputNumber disabled={fieldDisabled} />
-                        </Form.Item>
-
-                        <Button onClick={() => setFieldDisabled(false)}>Edit Order Details</Button>
-                        <Button htmlType="submit">Save Changes</Button>
-                        <Button onClick={handleOnOrderDelete}>Delete Order</Button>
-                    </Form>
-                )}
-                </Modal>  
-        </>
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                    <Button onClick={() => setFieldDisabled(false)} className='modal-btn'>
+                        <i class="fa-regular fa-pen-to-square"></i>
+                        Edit Order Details
+                    </Button>
+                    <Button htmlType="submit" className='modal-btn'>
+                        <i class="fa-regular fa-circle-check"></i>
+                        Save Changes
+                    </Button>
+                    <Button onClick={handleOnOrderDelete} className='modal-btn' danger>
+                        <i class="fa-solid fa-trash"></i>
+                        Delete Order
+                    </Button>
+                </div>
+                </Form>
+            )}
+        </Modal>
+    </>
     )
 };
     

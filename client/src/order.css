@@ -1,4 +1,4 @@
-.order-box{
+/* /* .order-box{
     width : 100%;
     height: 100%;
     display: flex;
@@ -40,7 +40,7 @@
     width: auto;
     height: auto;
     display: block;
-    /* padding: 1rem; */
+    padding: 1rem;
 }
 
 .delivery_Detail img{
@@ -70,15 +70,96 @@
 
 .delivery_Data_Box button .btn-img{
   display: none;
-  width: 20px; /* Optional: control image size */
+  width: 20px; Optional: control image size
   margin-left: 8px;
 }
 
 .delivery_Data_Box button:hover .btn-img{
     display: inline-block;
+} */
+
+#order-box{
+    height: auto;
+    width: 30rem;
+    padding: 2rem 0.75rem 2.5rem 0.75rem;
+    border: 0.5px solid rgb(128, 128, 128, 0.2);
+    border-radius: 1.2rem;
+    display: flex;
+    flex-direction: column;
 }
 
+#prim-box{
+    height: auto;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+}
 
+#order-title{
+    font-family: "Poppins", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 200 ;
+    text-align: start;
+    font-style: normal;
+    margin-left: 3rem;
+}
 
-    
+#secd-details{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.p1{
+    font-size: 1.27rem;
+    color: rgb(0, 0, 0, 0.5);
+    line-height: 0.5px;
+}
+
+.p2{
+    font-size: 1.27rem;
+    color: black
+}
+
+#prim-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#btn-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 2rem;
+}
+
+#btn-box button{
+    width: auto;
+    height: 3rem;
+    padding: 0.8rem 2.5rem 0.8rem 2.5rem;
+    border-radius: 1rem;
+    font-size: larger;
+    background-color: white !important;
+    border: 0.5px solid rgb(128, 128, 128, 0.4);
+}
+
+.form-fld{
+    font-size: 1.1rem;
+}
+
+.modal-btn{
+    width: auto;
+    height: 3rem;
+    padding: 0.8rem 2.5rem 0.8rem 2.5rem;
+    border-radius: 1rem;
+    font-size: large;
+    border: 0.5px solid rgb(128, 128, 128, 0.4);
+    text-align: center;
+    cursor: pointer;
+}
+
+.modal-btn i{
+    margin-right: 0.5rem;
+}
 
